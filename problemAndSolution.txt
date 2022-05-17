@@ -1,0 +1,5 @@
+1.无法连接github
+Failed to connect to 127.0.0.1 port XXXX: Connection refused
+
+solution for windows:	c:\Users\当前用户里的.gitconfig文件(这个默认是隐藏文件),
+将里面关于proxy的行删掉
