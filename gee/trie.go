@@ -1,12 +1,19 @@
 package gee
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type node struct {
 	pattern  string  // wait for matching route	  e.g. /p/:lang
 	part     string  // part of route  e.g. :lang
 	children []*node // child node	e.g. [doc, tutorial, intro]
 	isWild   bool    // the node needed to match vaguely	e.g. part contain : or * 时为true
+}
+
+func (n *node) String() string {
+	return fmt.Sprintf("node{pattern=%s, part=%s, isWild=%t}", n.pattern, n.part, n.isWild)
 }
 
 // find the first node match the part
@@ -65,4 +72,13 @@ func (n *node) search(parts []string, height int) *node {
 	}
 
 	return nil
+}
+
+func (n *node) travel(list *([]*node)) {
+	if n.pattern != "" {
+		*list = append(*list, n)
+	}
+	for _, child := range n.children {
+		child.travel(list)
+	}
 }
