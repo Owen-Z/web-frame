@@ -38,12 +38,15 @@ func (n *node) matchChildren(part string) []*node {
 	return nodes
 }
 
+// insert insert pattern by order
 func (n *node) insert(pattern string, parts []string, height int) {
+	// reach the bottom of the tree
 	if len(parts) == height {
 		n.pattern = pattern
 		return
 	}
 
+	// check if the node is existed
 	part := parts[height]
 	child := n.matchChild(part)
 	if child == nil {
@@ -53,7 +56,9 @@ func (n *node) insert(pattern string, parts []string, height int) {
 	child.insert(pattern, parts, height+1)
 }
 
+// search the node by the selected path
 func (n *node) search(parts []string, height int) *node {
+	// check the node is the bottom node or the node has prefixed "*"
 	if len(parts) == height || strings.HasPrefix(n.part, "*") {
 		if n.pattern == "" {
 			return nil
@@ -62,6 +67,7 @@ func (n *node) search(parts []string, height int) *node {
 	}
 
 	part := parts[height]
+	// find the vague children
 	children := n.matchChildren(part)
 
 	for _, child := range children {

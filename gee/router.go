@@ -7,9 +7,12 @@ import (
 )
 
 type router struct {
-	roots    map[string]*node
-	handlers map[string]HandlerFunc
+	roots    map[string]*node       // save key:method and value:node
+	handlers map[string]HandlerFunc // save pattern and its handler function
 }
+
+// roots key eg, roots['GET'] roots['POST']
+// handlers key eg, handlers['GET-/p/:lang/doc'], handlers['POST-/p/book']
 
 func newRouter() *router {
 	return &router{
@@ -33,6 +36,7 @@ func parsePattern(pattern string) []string {
 	return parts
 }
 
+// TODO duplicate insert needed to fix
 func (r *router) addRoute(method string, pattern string, handler HandlerFunc) {
 	log.Printf("Route %4s - %s", method, pattern)
 
@@ -43,6 +47,7 @@ func (r *router) addRoute(method string, pattern string, handler HandlerFunc) {
 	if !ok {
 		r.roots[method] = &node{}
 	}
+
 	r.roots[method].insert(pattern, parts, 0)
 	r.handlers[key] = handler
 }

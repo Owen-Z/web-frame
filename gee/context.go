@@ -15,7 +15,7 @@ type Context struct {
 	// request info
 	Path   string
 	Method string
-	Params map[string]string
+	Params map[string]string // the context's param e.g. :name = ACE
 	// response status code
 	StatusCode int
 }
